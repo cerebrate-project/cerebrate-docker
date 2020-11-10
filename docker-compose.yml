@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  database:
+    container_name: database
+    image: mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./app/dbinit:/docker-entrypoint-initdb.d/:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: cerebrate
+      MYSQL_USER: cerebrate
+      MYSQL_PASSWORD: YOUR_PASSWORD
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 10s
+      timeout: 2s
+      retries: 10
+  cerebrate:
+    container_name: cerebrate
+    build: .
+    depends_on:
+      database:
+        condition: service_healthy
+    links:
+      - database:database
+    ports:
+      - "8000:8000"
+
+
