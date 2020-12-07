@@ -1,32 +1,47 @@
-version: "3.8"
+version: "3"
 services:
   database:
-    container_name: database
-    image: mariadb
+    image: mariadb:10.1
     restart: always
     ports:
       - "3306:3306"
     volumes:
+      - ./database:/var/lib/mysql
       - ./app/dbinit:/docker-entrypoint-initdb.d/:ro
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: cerebrate
-      MYSQL_USER: cerebrate
-      MYSQL_PASSWORD: YOUR_PASSWORD
+      MYSQL_ROOT_PASSWORD: "abc123"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "cerebrate"
+      MYSQL_USER: "cerebrate"
+      MYSQL_PASSWORD: "etarberec"
     healthcheck:
       test: ["CMD-SHELL", 'mysqladmin ping']
       interval: 10s
       timeout: 2s
       retries: 10
-  cerebrate:
-    container_name: cerebrate
-    build: .
-    depends_on:
-      database:
-        condition: service_healthy
-    links:
-      - database:database
+  nginx:
+    image: cerebrate-nginx:latest
     ports:
-      - "8000:8000"
-
-
+      - "8080:80"
+    volumes:
+      - ./app/cerebrate:/www
+      - ./config/site.conf:/etc/nginx/conf.d/default.conf
+      - ./logs/nginx:/www/logs
+    depends_on: 
+      - cerebrate
+    links: 
+      - cerebrate:cerebrate
+  cerebrate:
+    image: cerebrate:latest
+    container_name: cerebrate
+    volumes: 
+      - ./config/site.conf:/etc/nginx/conf.d/default.conf
+      - ./logs/php-fpm:/var/logs
+    environment:
+      DEBUG: "true"
+      CEREBRATE_DB_USERNAME: "cerebrate"
+      CEREBRATE_DB_PASSWORD: "etarberec"
+      CEREBRATE_DB_NAME: "cerebrate"
+      CEREBRATE_DB_HOST: database
+    depends_on: 
+      - database

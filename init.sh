@@ -1,19 +1,22 @@
 #!/bin/bash
-MYDIR=./app
 
-echo "purging dir."
-rm -rf $MYDIR
-mkdir $MYDIR
+# log dir
+mkdir -p ./logs
 
-echo "download code"
-wget -P  $MYDIR --no-check-certificate https://github.com/cerebrate-project/cerebrate/archive/main.zip
+# make dir for app
+mkdir -p ./app/
 
-echo "unzip code"
-unzip -oqq $MYDIR/main.zip -d $MYDIR 
+# cloning latest cerebrate
+echo "Cloning latest cerebrate..."
+git clone https://github.com/cerebrate-project/cerebrate.git ./app/cerebrate
 
-echo "move initial db setup."
-mkdir -p $MYDIR/dbinit 
-cp $MYDIR/cerebrate-main/INSTALL/mysql.sql $MYDIR/dbinit/mysql.sql
+# move files for database setup
+echo "Copy initial db setup files..."
+mkdir -p ./app/dbinit
+cp ./app/cerebrate/INSTALL/clean.sql ./app/dbinit/clean.sql
+cp ./app/cerebrate/INSTALL/mysql.sql ./app/dbinit/mysql.sql
+echo "Done. Start now using ./start.sh"
 
-echo "starting solution"
-docker-compose up -d
+# building images..
+echo "Building docker image"
+./build-image.sh
