@@ -1,13 +1,24 @@
 # cerebrate-docker
 
-A simple docker installation script package for Cerebrate
+Cerebrate docker image.
 
-- init.sh, which takes care of downloading the latest version of the software, managing configurations and starting the solution by building the images;
+### How to install
+1. Clone this repository
+2. Run `sudo ./init.sh`
+3. Run `sudo ./start.sh`
+4. Visit `localhost:8080`
+    - Credentials `admin` and `Password1234`
+5. Have fun :)
 
-- remove.sh which takes care of stopping the services, removing the available containers and removing the downloaded software so as to return to the initial clean situation;
-   
-- start.sh and stop.sh are docker-compose wrappers to increase ease of use.
+### How to update code & rebuild everything?
+1. Work in ./app/cerebrate & update your code
+2. Run `sudo ./build-image.sh`
+3. Run `sudo ./stop.sh`
+4. Run `sudo ./start.sh`
+5. Same as 4. above.
 
+### How to stop this infrastructure?
+1. Run `sudo ./stop.sh`
 
-- Script by CSIRT Italiano (csirt.gov.it)
-
+### How to remove?
+1. Run `sudo ./remove.sh`
