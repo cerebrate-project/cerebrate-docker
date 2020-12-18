@@ -1,6 +1,6 @@
 FROM php:7.2-fpm
 
-LABEL maintainer="Change Me <change@change.me>" \
+LABEL maintainer="Circl Team <info@circl.lu>" \
       org.label-schema.schema-version="1.0" \
       org.label-schema.name="cerebrate" \
       org.label-schema.description="The Cerebrate Sync Platform core software " \
