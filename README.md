@@ -4,6 +4,7 @@ Cerebrate docker image.
 
 ### How to install
 1. Clone this repository
+1. Start the local docker service, if not already active
 2. Run `sudo ./init.sh`
 3. Run `sudo ./start.sh`
 4. Visit `localhost:8080`
