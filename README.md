@@ -1,5 +1,7 @@
 # cerebrate-docker
 
+## Note: This docker installation has been superseded by the installer bundled in cerebrate directly. Please switch to the installation instructions there.
+
 Cerebrate docker image.
 
 ### How to install
